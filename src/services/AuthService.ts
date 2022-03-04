@@ -22,10 +22,10 @@ export interface JwtToken {
  *   LoginPayload:
  *     type: object
  *     required:
- *       - usernameOrEmail
+ *       - username
  *       - password
  *     properties:
- *       usernameOrEmail:
+ *       username:
  *         type: string
  *         example: system
  *       password:
@@ -34,7 +34,7 @@ export interface JwtToken {
  *         format: password
  */
 export interface LoginPayload {
-    usernameOrEmail: string
+    username: string
     password: string
 }
 
@@ -105,8 +105,8 @@ export class AuthService {
     public async login(payload: LoginPayload): Promise<string> {
         const user = await this.userService.findOne({
             $or: [
-                { username: payload.usernameOrEmail },
-                { email: payload.usernameOrEmail }
+                { username: payload.username },
+                { email: payload.username }
             ]
         });
         if (!await comparePasswords(user.password, payload.password)) {

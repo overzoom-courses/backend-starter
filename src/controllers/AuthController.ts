@@ -11,7 +11,7 @@ export class AuthController {
 
     async login(req: Request, res: Response) {
         const payload: LoginPayload = req.body;
-        if (!payload.usernameOrEmail || !payload.password) {
+        if (!payload.username || !payload.password) {
             throw new httpErrors.Unauthorized("Invalid username or password!");
         }
 

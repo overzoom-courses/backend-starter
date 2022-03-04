@@ -16,7 +16,7 @@ export function generateMockUser(): User {
 export async function saveMockUserAndLogin(): Promise<{ token: string, user: UserDocument }> {
     const mockUser = generateMockUser();
     const user = await ioc.resolve(UserService).save(mockUser);
-    const userToken = await ioc.resolve(AuthService).login({ usernameOrEmail: mockUser.email, password: mockUser.password });
+    const userToken = await ioc.resolve(AuthService).login({ username: mockUser.email, password: mockUser.password });
     return {
         token: userToken,
         user: user

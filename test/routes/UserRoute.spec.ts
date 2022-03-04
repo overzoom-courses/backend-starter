@@ -40,7 +40,7 @@ const API = process.env.API_PATH;
         expect(user.password).not.to.equal(mock.password);
 
         const jwt = await this.authService.login({
-            usernameOrEmail: mock.username,
+            username: mock.username,
             password: mock.password,
         });
 

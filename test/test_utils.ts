@@ -15,7 +15,7 @@ export function assertSameUser(original: UserDocument, candidate: UserDocument) 
 export async function loginWithSystem(): Promise<string> {
     const authService = ioc.resolve(AuthService);
     return (await authService.login({
-        usernameOrEmail: "system",
+        username: "system",
         password: process.env.SYSTEM_PASS
     }));
 }

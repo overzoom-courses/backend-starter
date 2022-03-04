@@ -18,7 +18,7 @@ import { generateSystemUser } from "@utils/system";
         let token: string;
         try {
             token = await this.authService.login({
-                usernameOrEmail: "system",
+                username: "system",
                 password: process.env.SYSTEM_PASS
             });
         } catch (err) {
@@ -33,7 +33,7 @@ import { generateSystemUser } from "@utils/system";
         token = null;
         try {
             token = await this.authService.login({
-                usernameOrEmail: "system@server",
+                username: "system@server",
                 password: process.env.SYSTEM_PASS
             });
         } catch (err) {
@@ -49,7 +49,7 @@ import { generateSystemUser } from "@utils/system";
         // Wrong username
         try {
             const wrongToken = await this.authService.login({
-                usernameOrEmail: "bullshit",
+                username: "bullshit",
                 password: process.env.SYSTEM_PASS
             });
             expect(wrongToken, "I should not get a token from an invalid login!").not.to.exist;
@@ -62,7 +62,7 @@ import { generateSystemUser } from "@utils/system";
         // Wrong email
         try {
             const wrongToken = await this.authService.login({
-                usernameOrEmail: "system@server_bullshit",
+                username: "system@server_bullshit",
                 password: process.env.SYSTEM_PASS
             });
             expect(wrongToken, "I should not get a token from an invalid login!").not.to.exist;
@@ -76,7 +76,7 @@ import { generateSystemUser } from "@utils/system";
         let wrongToken: string;
         try {
             wrongToken = await this.authService.login({
-                usernameOrEmail: "system@server",
+                username: "system@server",
                 password: process.env.SYSTEM_PASS + "I_CC_TP"
             });
         } catch (err) {
