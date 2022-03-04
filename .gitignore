@@ -1,0 +1,34 @@
+node_modules/
+dist/
+
+# Local .env* files
+.env.local
+.env.*.local
+
+# Prod .env
+.env.production
+
+# IDEA
+.idea/
+
+# Assets
+test/assets/*.html
+test/assets/.~lock*
+test/assets/pdf/invoices/
+
+# Log files
+*.log
+
+# PDF and XLSX files
+!public/pdf/.gitkeep
+!public/xlsx/.gitkeep
+!public/invoices/.gitkeep
+!public/attachments/.gitkeep
+public/pdf/
+public/xlsx/
+public/invoices/
+public/attachments/
+public/logs/
+
+# Lock files
+.~lock.*

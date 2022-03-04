@@ -1,0 +1,38 @@
+{
+    "compilerOptions": {
+        "rootDir": ".",
+        "outDir": "dist",
+        "lib": [ "es2016" ],
+	    "skipLibCheck": true,
+        "noImplicitAny": true,
+        "removeComments": true,
+        "sourceMap": true,
+        "inlineSources": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "types": [ "node", "reflect-metadata", "mocha" ],
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "target": "es5",
+        "baseUrl": "src",
+        "downlevelIteration": true,
+        "paths": {
+            "@ioc": [ "inversify.config.ts" ],
+            "@server": [ "server.ts" ],
+            "@utils/*": [ "utils/*" ],
+            "@models/*": [ "models/*" ],
+            "@services/*": [ "services/*" ],
+            "@controllers/*": [ "controllers/*" ],
+            "@routes/*": [ "routes/*" ]
+        }
+    },
+    "include": [
+        "src/**/*.ts",
+        "test/**/*.ts"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist"
+    ]
+}

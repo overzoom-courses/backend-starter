@@ -1,0 +1,12 @@
+{
+    "name": "velvet-server",
+    "script": "dist/src/index.js",
+    "instances": "1",
+    "instance_var": "INSTANCE_ID",
+    "env": {
+        "NODE_ENV": "production"
+    },
+    "env_production" : {
+        "NODE_ENV": "production"
+    }
+}
