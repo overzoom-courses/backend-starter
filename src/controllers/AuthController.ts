@@ -17,7 +17,7 @@ export class AuthController {
 
         try {
             const token = await this.authService.login(payload);
-            return res.status(200).send(token);
+            return res.status(200).send({ token });
         } catch (err) {
             throw new httpErrors.Unauthorized("Invalid username or password!");
         }
