@@ -1,5 +1,5 @@
 {
-    "name": "velvet-server",
+    "name": "backend-starter",
     "script": "dist/src/index.js",
     "instances": "1",
     "instance_var": "INSTANCE_ID",

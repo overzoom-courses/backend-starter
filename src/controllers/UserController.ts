@@ -2,10 +2,10 @@ import { Request, Response } from "express";
 import { provide } from "inversify-binding-decorators";
 import { inject } from "inversify";
 import { UserService } from "@services/UserService";
-import { userDecoder, UserPasswordUpdate, userPasswordUpdateDecoder } from "@models/UserModel";
+import { userDecoder, userPasswordUpdateDecoder } from "@models/UserModel";
 import { logger } from "@utils/winston";
 import { AuthService } from "@services/AuthService";
-import { extractPaginateOptionsFromBody } from "@utils/pagination";
+import { extractPaginateOptions } from "@utils/pagination";
 import httpErrors from "http-errors";
 
 @provide(UserController)
@@ -32,7 +32,7 @@ export class UserController {
 
     public async find(req: Request, res: Response) {
         await this.authService.adminOnly(req);
-        const pagination = extractPaginateOptionsFromBody(req.body.pagination);
+        const pagination = extractPaginateOptions(req.body.pagination);
 
         const result = await this.userService.paginate(req.body.query, pagination);
         return res.status(200).send(result);

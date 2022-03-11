@@ -30,7 +30,7 @@ export interface JwtToken {
  *         example: system
  *       password:
  *         type: string
- *         example: FistsOfJustice!
+ *         example: ciao
  *         format: password
  */
 export interface LoginPayload {
@@ -63,7 +63,7 @@ export class AuthService {
                 try {
                     const user = await this.userService.findById(payload.userId);
                     if (!user) {
-                        return done(null, null, { error: "User by token not found!" });
+                        return done({ error: "User by token not found!" });
                     }
                     return done(null, user);
                 } catch (err) {

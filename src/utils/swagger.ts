@@ -6,7 +6,7 @@ export const swaggerOptions: SwaggerUiOptions = {
     customCss: `
         .swagger-ui .topbar { display: none }
     `,
-    customSiteTitle: "Velvet Mongo server API Docs"
+    customSiteTitle: "Backend starter API Docs"
 };
 
 export const swaggerUi = setup(swaggerJSDoc({

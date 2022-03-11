@@ -1,10 +1,10 @@
 import { provide } from "inversify-binding-decorators";
 import { UserModel, User, UserDocument, UserPasswordUpdate } from "@models/UserModel";
 import { comparePasswords } from "@utils/crypto";
-import { FilterQuery, UpdateQuery } from "mongoose";
-import { Paginated, PaginateOptions, QueryOptions } from "@utils/pagination";
-import httpErrors from "http-errors";
+import { FilterQuery, PaginateOptions, PaginateResult, UpdateQuery } from "mongoose";
+import { QueryOptions } from "@utils/pagination";
 import { unmanaged } from "inversify";
+import httpErrors from "http-errors";
 
 @provide(UserService)
 export class UserService {
@@ -39,22 +39,8 @@ export class UserService {
             .exec();
     }
 
-    public async paginate(query: FilterQuery<UserDocument>, options: PaginateOptions): Promise<Paginated<UserDocument>> {
-        const count = await this.userModel.find(query).countDocuments().exec();
-        const docs = await this.userModel.find(query)
-            .skip(options.pageIndex * options.pageSize)
-            .limit(options.pageSize)
-            .sort(options.sort || {})
-            .populate(options.populate || "")
-            .select(options.select || "");
-
-        return {
-            meta: {
-                total: count,
-                pages: Math.ceil(count / options.pageSize)
-            },
-            docs: docs
-        };
+    public async paginate(query: FilterQuery<UserDocument>, options: PaginateOptions): Promise<PaginateResult<UserDocument>> {
+        return this.userModel.paginate(query, options);
     }
 
     public async updateById(id: string, updateBody: UpdateQuery<UserDocument>): Promise<UserDocument> {

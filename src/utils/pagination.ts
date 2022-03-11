@@ -1,4 +1,22 @@
-import { Document } from "mongoose";
+import { PaginateOptions } from "mongoose";
+
+/**
+ * @swagger
+ *
+ * definitions:
+ *   QueryOptions:
+ *     type: object
+ *      sort:
+ *         type: object
+ *         description: Sort object following the Mongoose notation
+ *       populate:
+ *         type: string
+ *         description: Fields to populate separated by spaces
+ *       select:
+ *         type: string
+ *         description: Fields to select separated by spaces
+ */
+export type QueryOptions = Pick<PaginateOptions, "select" | "sort" | "populate">
 
 /**
  * @swagger
@@ -7,11 +25,12 @@ import { Document } from "mongoose";
  *   PaginateOptions:
  *     type: object
  *     properties:
- *       pageIndex:
+ *       page:
  *         type: number
- *         description: 0-based page number
- *       pageSize:
+ *         description: 1-based page number
+ *       limit:
  *         type: number
+ *         description: Page size
  *       sort:
  *         type: object
  *         description: Sort object following the Mongoose notation
@@ -22,57 +41,17 @@ import { Document } from "mongoose";
  *         type: string
  *         description: Fields to select separated by spaces
  */
-export interface QueryOptions {
-    populate?: string
-    select?: string
-    sort?: Object
-}
-export interface PaginateOptions extends QueryOptions {
-    pageIndex?: number
-    pageSize?: number
-}
-
-/**
- * @swagger
- *
- * definitions:
- *   Paginated:
- *     type: object
- *     properties:
- *       meta:
- *         type: object
- *         properties:
- *           total:
- *             type: number
- *             description: Total number of documents present (estimated)
- *           pages:
- *             type: number
- *             description: Total number of pages (estimated by total)
- *       docs:
- *         type: array
- *         description: Documents on this page
- *         items:
- *           type: object
- */
-export interface Paginated<T extends Document> {
-    meta: {
-        total: number
-        pages: number
-    }
-    docs: T[]
-}
-
-export function extractPaginateOptionsFromBody(body: any): PaginateOptions {
-    const { pagination } = body;
+export function extractPaginateOptions(object: any): PaginateOptions {
+    const { pagination } = object;
     if (!pagination) {
         return {};
     }
 
     return {
-        pageIndex: parseInt(body["pageIndex"] || "0"),
-        pageSize: parseInt(body["pageSize"] || "10"),
-        sort: typeof body["sort"] === "string" ? JSON.parse(body["sort"] || "{}") : body["sort"],
-        populate: body["populate"] || "",
-        select: body["select"] || "",
+        page: parseInt(object["page"] || "0"),
+        limit: parseInt(object["limit"] || "10"),
+        sort: typeof object["sort"] === "string" ? JSON.parse(object["sort"] || "{}") : object["sort"],
+        populate: object["populate"] || "",
+        select: object["select"] || "",
     };
 }

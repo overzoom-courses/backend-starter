@@ -1,7 +1,8 @@
-import { model, Model, Schema, Document } from "mongoose";
+import { model, Schema, Document, PaginateModel } from "mongoose";
 import { encryptPasswordSync } from "@utils/crypto";
 import { array, constant, Decoder, object, oneOf, optional, string } from "@mojotech/json-type-validation";
 import uniqueValidator from "mongoose-unique-validator";
+import paginate from "mongoose-paginate";
 
 export enum UserRoles {
     ROLE_USER = "ROLE_USER",
@@ -29,7 +30,7 @@ export enum UserRoles {
  *         example: giovanni.orciuolo1999@gmail.com
  *       password:
  *         type: string
- *         example: OhyaWorstGirl
+ *         example: ciao1234
  *       roles:
  *         type: array
  *         example: [ "ROLE_USER" ]
@@ -84,10 +85,10 @@ export const userDecoder: Decoder<User> = object({
  *     properties:
  *       currentPassword:
  *         type: string
- *         example: FistsOfJustice!
+ *         example: test
  *       newPassword:
  *         type: string
- *         example: TakeOver!
+ *         example: ciao
  */
 export interface UserPasswordUpdate {
     currentPassword: string;
@@ -129,8 +130,9 @@ export const UserSchema = new Schema<User>({
 });
 
 UserSchema.plugin(uniqueValidator);
+UserSchema.plugin(paginate);
 UserSchema.methods.isAdmin = function() {
     return this.roles.includes(UserRoles.ROLE_ADMIN);
 };
 
-export const UserModel = model("User", UserSchema);
+export const UserModel = model<UserDocument>("User", UserSchema) as PaginateModel<UserDocument>;
