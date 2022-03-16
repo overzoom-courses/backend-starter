@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { provide } from "inversify-binding-decorators";
 import { inject } from "inversify";
 import { AuthService, LoginPayload } from "@services/AuthService";
-import httpErrors from "http-errors";
 
 @provide(AuthController)
 export class AuthController {
@@ -12,14 +11,13 @@ export class AuthController {
     async login(req: Request, res: Response) {
         const payload: LoginPayload = req.body;
         if (!payload.username || !payload.password) {
-            throw new httpErrors.Unauthorized("Invalid username or password!");
+            return res.status(400).send("Missing Fields")
         }
-
         try {
             const token = await this.authService.login(payload);
             return res.status(200).send({ token });
         } catch (err) {
-            throw new httpErrors.Unauthorized("Invalid username or password!");
+            return res.status(err.statusCode).send(err.message)
         }
     }
 
