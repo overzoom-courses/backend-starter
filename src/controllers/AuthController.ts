@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { provide } from "inversify-binding-decorators";
 import { inject } from "inversify";
 import { AuthService, LoginPayload } from "@services/AuthService";
-import {Unauthorized} from "http-errors";
+import { Unauthorized } from "http-errors";
 
 @provide(AuthController)
 export class AuthController {
@@ -26,8 +26,12 @@ export class AuthController {
     }
 
     async me(req: Request, res: Response) {
-        const user = await this.authService.getUserFromRequest(req);
-        return res.status(200).send(user);
+        try {
+            const user = await this.authService.getUserFromRequest(req);
+            return res.status(200).send(user);
+        } catch (err) {
+            return res.status(400).send(err);
+        }
     }
 
 }

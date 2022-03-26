@@ -44,7 +44,7 @@ export class UserRoute implements Route {
          *       409:
          *         description: Email and username must be unique
          */
-        app.post("/user", passport.authenticate("jwt"), (req, res) => {
+        app.post("/user", passport.authenticate("jwt", {session: false}), (req, res) => {
             this.userController.create(req, res);
         });
 
@@ -78,7 +78,7 @@ export class UserRoute implements Route {
          *       403:
          *         $ref: "#/responses/Forbidden"
          */
-        app.post("/user/query", passport.authenticate("jwt"), (req, res) => {
+        app.post("/user/query", passport.authenticate("jwt", {session: false}), (req, res) => {
             this.userController.find(req, res);
         });
 
@@ -111,7 +111,7 @@ export class UserRoute implements Route {
          *       403:
          *         $ref: "#/responses/Forbidden"
          */
-        app.post("/user/:id", passport.authenticate("jwt"), (req, res) => {
+        app.get("/user/:id", passport.authenticate("jwt", {session: false}), (req, res) => {
             this.userController.findById(req, res);
         });
 
@@ -148,7 +148,7 @@ export class UserRoute implements Route {
          *       403:
          *         $ref: "#/responses/Forbidden"
          */
-        app.put("/user/:id", passport.authenticate("jwt"), (req, res) => {
+        app.put("/user/:id", passport.authenticate("jwt", {session: false}), (req, res) => {
             this.userController.updateById(req, res);
         });
 
@@ -211,7 +211,7 @@ export class UserRoute implements Route {
          *       401:
          *         $ref: "#/responses/Unauthorized"
          */
-        app.post("/user/register", (req, res) => {
+        app.put("/user/update/password", (req, res) => {
             this.userController.updatePassword(req, res);
         });
 
@@ -242,7 +242,7 @@ export class UserRoute implements Route {
          *       401:
          *         $ref: "#/responses/Unauthorized"
          */
-        app.put("/user/update/me", passport.authenticate("jwt"), (req, res) => {
+        app.put("/user/update/me", passport.authenticate("jwt", {session: false}), (req, res) => {
             this.userController.updateMe(req, res);
         });
 
@@ -275,7 +275,7 @@ export class UserRoute implements Route {
          *       403:
          *         $ref: "#/responses/Forbidden"
          */
-        app.delete("/user/:id", passport.authenticate("jwt"), (req, res) => {
+        app.delete("/user/:id", passport.authenticate("jwt", {session: false}), (req, res) => {
             this.userController.deleteById(req, res);
         });
     }
