@@ -6,7 +6,7 @@ import { userDecoder, userPasswordUpdateDecoder } from "@models/UserModel";
 import { logger } from "@utils/winston";
 import { AuthService } from "@services/AuthService";
 import { extractPaginateOptions } from "@utils/pagination";
-import httpErrors from "http-errors";
+import httpErrors, {BadRequest, Forbidden} from "http-errors";
 
 @provide(UserController)
 export class UserController {
@@ -23,7 +23,7 @@ export class UserController {
 
             return res.status(201).send(saved);
         } catch (err) {
-            return res.status(400).send(err);
+            return res.status(500).send({ message: err.message });
         }
     }
 
@@ -34,19 +34,19 @@ export class UserController {
 
             return res.status(201).send(saved);
         } catch (err) {
-            return res.status(400).send(err);
+            return res.status(500).send({ message: err.message });
         }
     }
 
     public async find(req: Request, res: Response) {
         try {
             await this.authService.adminOnly(req);
-            const pagination = extractPaginateOptions(req.body);
+            const pagination = extractPaginateOptions(req.body.pagination);
 
             const result = await this.userService.paginate(req.body.query, pagination);
             return res.status(200).send(result);
         } catch (err) {
-            return res.status(400).send(err);
+            return res.status(500).send({ message: err.message });
         }
     }
 
@@ -61,7 +61,10 @@ export class UserController {
 
             return res.status(200).send(obj);
         } catch (err) {
-            return res.status(400).send(err);
+            if (err instanceof BadRequest) {
+                return res.status(400).send({ message: err.message });
+            }
+            return res.status(500).send({ message: err.message });
         }
     }
 
@@ -76,7 +79,10 @@ export class UserController {
 
             return res.status(200).send(updated);
         } catch (err) {
-            return res.status(400).send(err);
+            if (err instanceof BadRequest) {
+                return res.status(400).send({ message: err.message });
+            }
+            return res.status(500).send({ message: err.message });
         }
     }
 
@@ -93,7 +99,13 @@ export class UserController {
             const updated = await this.userService.updateById(user.id, req.body);
             return res.status(200).send(updated);
         } catch (err) {
-            return res.status(400).send(err);
+            if (err instanceof BadRequest) {
+                return res.status(400).send({ message: err.message });
+            }
+            if (err instanceof Forbidden) {
+                return res.status(403).send({ message: err.message });
+            }
+            return res.status(500).send({ message: err.message });
         }
     }
 
@@ -107,7 +119,7 @@ export class UserController {
 
             return res.status(200).send({ message: "Password updated successfully" });
         } catch (err) {
-            return res.status(400).send(err);
+            return res.status(500).send({ message: err.message });
         }
     }
 
@@ -119,8 +131,12 @@ export class UserController {
             await this.userService.deleteById(req.params.id);
             return res.status(200).send({ message: "OK" } );
         } catch (err) {
-            return res.status(400).send(err);
+            if (err instanceof BadRequest) {
+                return res.status(400).send({ message: err.message });
+            }
+            return res.status(500).send({ message: err.message });
         }
     }
+
 
 }
