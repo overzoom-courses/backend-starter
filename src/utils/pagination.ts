@@ -1,4 +1,4 @@
-import { PaginateOptions } from "mongoose";
+import {PaginateOptions} from "mongoose";
 
 /**
  * @swagger
@@ -42,8 +42,7 @@ export type QueryOptions = Pick<PaginateOptions, "select" | "sort" | "populate">
  *         description: Fields to select separated by spaces
  */
 export function extractPaginateOptions(object: any): PaginateOptions {
-    const { pagination } = object;
-    if (!pagination) {
+    if (!object) {
         return {};
     }
 

@@ -16,24 +16,32 @@ export class UserService {
         try {
             return await this.userModel.create(user);
         } catch (err) {
-            throw formatMongoError(err);
+            throw Error(err);
         }
     }
 
     public async findById(id: string, options?: QueryOptions): Promise<UserDocument> {
-        return await this.userModel.findById(id)
+        try {
+            return await this.userModel.findById(id)
             .populate(options?.populate || "")
             .select(options?.select || "")
             .orFail()
             .exec();
+        } catch (err) {
+            throw Error(err);
+        }
     }
 
     public async findOne(query?: FilterQuery<UserDocument>, options?: QueryOptions): Promise<UserDocument> {
-        return await this.userModel.findOne(query || {})
-            .populate(options?.populate || "")
-            .select(options?.select || "")
-            .orFail()
-            .exec();
+        try {
+            return await this.userModel.findOne(query || {})
+                .populate(options?.populate || "")
+                .select(options?.select || "")
+                .orFail()
+                .exec();
+        } catch (err) {
+            throw Error(err);
+        }
     }
 
     public async find(query?: FilterQuery<UserDocument>, options?: QueryOptions): Promise<UserDocument[]> {
@@ -45,7 +53,11 @@ export class UserService {
     }
 
     public async paginate(query: FilterQuery<UserDocument>, options: PaginateOptions): Promise<PaginateResult<UserDocument>> {
-        return this.userModel.paginate(query, options);
+        try {
+            return this.userModel.paginate(query, options);
+        } catch (err) {
+            throw Error(err);
+        }
     }
 
     public async updateById(id: string, updateBody: UpdateQuery<UserDocument>): Promise<UserDocument> {
