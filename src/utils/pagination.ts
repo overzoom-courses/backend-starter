@@ -47,7 +47,7 @@ export function extractPaginateOptions(object: any): PaginateOptions {
     }
 
     return {
-        page: parseInt(object["page"] || "0"),
+        page: parseInt(object["page"] || "1"),
         limit: parseInt(object["limit"] || "10"),
         sort: typeof object["sort"] === "string" ? JSON.parse(object["sort"] || "{}") : object["sort"],
         populate: object["populate"] || "",
